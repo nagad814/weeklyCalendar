@@ -25,6 +25,7 @@ const Row = (props) => {
             let arr = [];
             for (var val of data) {
                     if(direction==="vertical"){
+                        if(val.day !=="Sunday" && val.day !== "Saturday")
                         arr.push(
                             <Cell key={val.id} onPress={onPress}>
                             <View style={{backgroundColor:"pink"}}>
@@ -32,6 +33,14 @@ const Row = (props) => {
                             </View>
                             </Cell>
                         )   
+                    } else{
+                        arr.push(
+                            <Cell key={val.id} onPress={onPress}>
+                            <View style={{backgroundColor:"pink"}}>
+                            <Text>{val.title} and {val.day}</Text>
+                            </View>
+                            </Cell>
+                        )
                     }}
             return arr
             })()}

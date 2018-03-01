@@ -9,7 +9,8 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Dimensions
 } from 'react-native';
 
 import Cell from "./src/grid/row/cell";
@@ -23,9 +24,24 @@ const instructions = Platform.select({
 });
 
 const data = [ {id: 1, title:'ant', day: "Sunday" }, {id: 2, title:'bison', day: "Monday" }, {id: 3, title:'camel', day: "Tuesday" },  {id: 4, title:'dear', day: "Wednesday" }, {id: 5, title:'elephant', day: "Thursday" }, {id: 6, title:'fox', day: "Friday" }, {id: 7, title:'girrafe', day: "Saturday" }];
-const direction = "horizontal";
+const {width, height} = Dimensions.get("window");
+let direction = width<height && "vertical";
 
 export default class App extends Component {
+
+  state = { direction }
+
+  componentDidMount(){
+    Dimensions.addEventListener('change', this._handleChange);
+  }
+
+  componentWillUnmount() {
+    Dimensions.addEventListener('change', this._handleChange);
+  }
+
+  _handleChange = (change) => {
+        this.setState(prevState => ({direction = width>height && "horizontal"}));
+  }
 
   render() {
     console.log(data);
@@ -44,9 +60,9 @@ export default class App extends Component {
         </Text>
         </View>
         </Cell> */}
-        <Row data={data} id={10} direction={direction} onPress={() => alert("week cell")}/>
-        <Row data={data} id={10} direction={direction} onPress={() => alert("week cell")}/>
-        <Row data={data} id={10} direction={direction} onPress={() => alert("week cell")}/>
+        <Row data={data} id={10} direction={this.state.direction} onPress={() => alert("week cell")}/>
+        <Row data={data} id={10} direction={this.state.direction} onPress={() => alert("week cell")}/>
+        <Row data={data} id={10} direction={this.state.direction} onPress={() => alert("week cell")}/>
         
       </View>
     );
