@@ -10,48 +10,37 @@ import PropTypes from 'prop-types';
 
 const Row = (props) => {
     const {
-        direction,
         data,
         onPress,
-    } = props;
-
-    rowCell =() => {
-
-    }
-    
+        direction,
+        width,
+        height,
+    } = props;    
       return (
-        <View style={{flexDirection: "row", flexWrap:"wrap", justifyContent:"space-around"}}>
+        <View style={{flexDirection: "row", width:width, height:height/8, flexWrap:"nowrap", alignContent:"space-between", justifyContent: "space-between", alignItems:"center"}}>
+        <Text> first hour </Text>
             {(()=>{
-            let arr = [];
-            for (var val of data) {
-                    if(direction==="vertical"){
-                        if(val.day !=="Sunday" && val.day !== "Saturday")
-                        arr.push(
-                            <Cell key={val.id} onPress={onPress}>
-                            <View style={{backgroundColor:"pink"}}>
-                            <Text>{val.title} and {val.day}</Text>
-                            </View>
-                            </Cell>
-                        )   
-                    } else{
-                        arr.push(
-                            <Cell key={val.id} onPress={onPress}>
-                            <View style={{backgroundColor:"pink"}}>
-                            <Text>{val.title} and {val.day}</Text>
-                            </View>
-                            </Cell>
-                        )
-                    }}
-            return arr
+                return data.map((data) => {
+                    return (
+                        <Cell key={data.id} onPress={onPress}>
+                        <View style={{backgroundColor:"pink", flexWrap:"wrap", alignItems:"center"}}>
+                        <Text>{data.title}</Text>
+                        </View>
+                        </Cell>
+                    )
+                  })
             })()}
+            
           </View>
       )
 };
 
 Row.propTypes = {
-    direction: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
     onPress: PropTypes.func.isRequired,
+    direction: PropTypes.bool.isRequired,
+    width: PropTypes.number.isRequired,
+    height:PropTypes.number.isRequired,
 };
 
 export default Row;

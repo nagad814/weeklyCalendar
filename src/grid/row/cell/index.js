@@ -13,7 +13,11 @@ const Cell = (props) => {
     } = props;
 
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress} 
+        style={{paddingTop: 10,
+            paddingRight: 10,
+            paddingBottom: 10,
+            backgroundColor: 'transparent',}}>
         <View>
             {children}
         </View>
