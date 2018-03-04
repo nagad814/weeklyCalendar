@@ -64,25 +64,6 @@ for(i= 0; i < 23; i++){
  bodyArr.push({id:''+i, data:tempArr});
 }
 
-
-
-
-
-
-var date = new Date(new Date().setHours(0,0,0,0));
-var calendar = require('calendar-month-array');
-const weeks = calendar(date , {weekStartDay: 6})
-
-
-
-const data = [ {id: 1, title:'ant', day: "Sunday" }, {id: 2, title:'bison', day: "Monday" }, {id: 3, title:'camel', day: "Tuesday" },  {id: 4, title:'dear', day: "Wednesday" }, {id: 5, title:'elephant', day: "Thursday" }, {id: 6, title:'fox', day: "Friday" }, {id: 7, title:'girrafe', day: "Saturday" }];
-
-
-const flatListData = [{key: "1", data}, {key: "2", data}, {key: "3", data}, {key: "4", data}, {key: "5", data}, 
-  {key: "6", data},{key: "7", data},{key: "8", data},{key: "9", data},{key: "10", data},{key:"11", data},
-  {key: "12", data},{key: "13", data},{key: "14", data},{key: "15", data},{key: "16", data},{key: "17", data},
-  {key: "18", data},{key: "19", data},{key: "20", data},{key: "21", data},{key: "22", data},{key: "23", data}, {key: "24", data}]
-
 const CustomLayoutSpring = {
   duration: 400,
   create: {
