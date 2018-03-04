@@ -51,7 +51,11 @@ var weekHourArr = new Array();
 for(i=0; i < 168; i++ ){
   let h = moment.duration(i, 'h');
   let timeObj = firstOfWeek.clone().add(h)
-  weekHourArr.push({timeObj, MonthDay:timeObj.date(), weekDay: timeObj.day(), hour: timeObj.hours()});
+  if(timeObj.isBetween('2018-03-05', '2010-03-06')){
+  weekHourArr.push({timeObj, MonthDay:timeObj.date(), weekDay: timeObj.day(), hour: timeObj.hours()});        
+  } else{
+  weekHourArr.push({timeObj, MonthDay:timeObj.date(), weekDay: timeObj.day(), hour: timeObj.hours()});    
+  }
 }
 
 // Create bodyArr which renders row
@@ -59,9 +63,11 @@ for(i=0; i < 168; i++ ){
 let bodyArr = new Array();
 
   // loop 0 to 23 to get hour rows
-for(i= 0; i < 23; i++){
+for(i= 0; i < 24; i++){
  let tempArr = weekHourArr.filter(result => result.hour === i);
- bodyArr.push({id:''+i, data:tempArr});
+ let h = moment.duration(i, 'h');
+ let headTitle = firstOfWeek.clone().add(h).format("hh a")
+ bodyArr.push({id:''+i, headTitle,  data:tempArr});
 }
 
 const CustomLayoutSpring = {
@@ -87,7 +93,6 @@ export default class App extends Component {
   
   componentDidMount(){
 
-    console.log(bodyArr);
     Dimensions.addEventListener('change', this._handleChange);
 
   }
@@ -120,37 +125,37 @@ export default class App extends Component {
     const result = item.data.slice();
     const data = result.filter(result => result.weekDay != 0 && result.weekDay != 6 );
     if(this.state.direction){
-      // console.log(data);
       return (
-        <Row data={data} id={data.MonthDay} direction={this.state.direction} 
+        <Row data={data} id={item.headTitle} direction={this.state.direction} header={false}
         width={this.state.width} height={this.state.height} onPress={() => alert("week cell")}/>
       )
     } else{
-      // console.log(result);
       return (
-        <Row data={result} id={result.MonthDay} direction={this.state.direction} 
+        <Row data={result} id={item.headTitle} direction={this.state.direction} header={false}
         width={this.state.width} height={this.state.height} onPress={() => alert("week cell")}/>
       )
     }
   }
 
   render() {
-    console.log(this.state);
+    // console.log(this.state);
    const {width, height} = this.state;
     return (
       <View style={styles.container}>
+      <View style={{elevation:4}}>
         {
           this.state.direction?
           (
-            <Row data={activeHeaderArr} id={"top"} direction={this.state.direction} 
+            <Row data={activeHeaderArr} id={"#"} direction={this.state.direction} header={true}
             width={this.state.width} height={this.state.height} onPress={() => console.log("okay")}/>
           )
           : 
           (
-            <Row data={headerArr} id={"top"} direction={this.state.direction} 
+            <Row data={headerArr} id={"#"} direction={this.state.direction} header={true}
             width={this.state.width} height={this.state.height} onPress={() => console.log("okay")}/>
           )
         }
+      </View>
         <FlatList
         data={bodyArr}
         extraData={this.state}
