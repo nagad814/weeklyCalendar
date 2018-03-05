@@ -41,10 +41,11 @@ const Row = (props) => {
     } = props;
     // console.log(props);    
       return (
-        <View style={{flexDirection: "row", width:width, height:height/8, flexWrap:"nowrap", alignContent:"space-between", justifyContent: "space-between", alignItems:"center"}}>
+        <View style={{flexDirection: "row", width:width, height:height/8, 
+        flexWrap:"nowrap", alignContent:"space-between", justifyContent: "space-between", alignItems:"center", backgroundColor:"#a0dcd8"  }}>
         <View style={{ flex: 1,  height: "100%",
-            borderColor:"lightgrey", borderRightWidth: 1, borderLeftWidth: 1, justifyContent: "center", alignItems:"center",
-            backgroundColor: 'transparent'}}>
+             justifyContent: "center", 
+            alignItems:"center",backgroundColor:"#a0dcd8"}}>
         <Text>{id}</Text>
         </View>
             {header ?
@@ -53,8 +54,8 @@ const Row = (props) => {
                     const {dayName, dayNum, monthName} = data;
                     return (
                         <Cell key={data.dayName} onPress={onPress}>
-                        <View style={{height:"100%", flexWrap:"nowrap", flexDirection: "row"}}>
-                        <View style={{backgroundColor:"pink", justifyContent:"center",flexGrow:1, flex:1, alignItems:"center"}}>
+                        <View style={{height:"100%", flexWrap:"nowrap", flexDirection: "row",}}>
+                        <View style={{justifyContent:"center",flexGrow:1, flex:1, alignItems:"center",}}>
                         <Text style={{fontSize: 20}}>
                          {monthName} {dayNum} {'\n'} {dayName}
                          </Text>
@@ -67,15 +68,25 @@ const Row = (props) => {
             :
             (()=>{
                 return data.map((data) => {
-                    // console.log(data.task);
+                    //console.log(data);
+                    //MonthDay:7
+                    //hour:23
+                    //task: Array
+                    // timeObj
+                    // weekDay: 3
+                    
+                    const {MonthDay, hour, weekDay, task} = data;
                     return (
-                        <Cell key={data.MonthDay} onPress={onPress}>
-                        <View style={{height:"100%", flexWrap:"nowrap", flexDirection: "row"}}>
+                        <Cell key={MonthDay} onPress={onPress}>
+                        <View style={[{height:"100%", justifyContent:"center", flexWrap:"nowrap", flexDirection: "row"}, hour%2 == 0 ?{backgroundColor:"#eceeef"}:{backgroundColor:"transparent"}]}>
                         {(()=>{
                             
-                            return data.task.map((task) => {
+                            return task.map((task, index) => {
+                                const {taskName, startTime} = task;
                                 return (
-                                    <View key={task.taskName} style={{backgroundColor:randCol(task.startTime.hours(),task.startTime.date() ), justifyContent:"center",flexGrow:1, flex:1, alignItems:"center"}}>
+                                    <View key={taskName} style={[{backgroundColor:randCol(startTime.hours(),startTime.date() ), 
+                                        justifyContent:"center", flex:1, alignItems:"center"}, 
+                                            index ?{flexGrow:1/index}:{flexGrow:0.9}]}>
                                     </View>
                                 )
                                 });
