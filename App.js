@@ -165,6 +165,8 @@ return bodyArr;
 // 6) calendarArrayCreator 
 // array of task objects , date, weekStart
 
+// this function is very ineffcient as it caluclates all data, which is independent of direction.
+// only needs rotation filter and body modification
 
   const calendarArrayCreator = function (taskArr, date, weekStart, isVertical) {
 
