@@ -39,7 +39,6 @@ const Row = (props) => {
         height,
         header,
     } = props;
-    // console.log(props);    
       return (
         <View style={{flexDirection: "row", width:width, height:height/8, 
         flexWrap:"nowrap", alignContent:"space-between", justifyContent: "space-between", alignItems:"center", backgroundColor:"#a0dcd8"  }}>
@@ -68,13 +67,6 @@ const Row = (props) => {
             :
             (()=>{
                 return data.map((data) => {
-                    //console.log(data);
-                    //MonthDay:7
-                    //hour:23
-                    //task: Array
-                    // timeObj
-                    // weekDay: 3
-                    
                     const {MonthDay, hour, weekDay, task} = data;
                     return (
                         <Cell key={MonthDay} onPress={onPress}>

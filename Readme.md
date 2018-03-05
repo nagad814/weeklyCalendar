@@ -1,80 +1,68 @@
 # Project Title
 
-One Paragraph of project description goes here
+Week View Calendar Challenge
 
-## Getting Started
+## Challenge Description
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Create a week view calendar for mobile devices. The view should show a 5-day week on portrait, and 7-day week on landscape orientation. Only client side code is necessary. Add at least two events to the calendar. The calendar should be able to read data asynchronously (e.g. XHR, WebSQL, etc.)
 
-### Prerequisites
+Constraints 
+Allowed technologies
 
-What things you need to install the software and how to install them
+Any or a mix of: React Native, JavaScript, HTML5, CSS3, Objective C, media queries
 
-```
-Give examples
-```
+## Thought process
 
-### Installing
+1) Create a something similar to excel.
+2) Since it should scroll vertically, and hide extra columns. Use rows!
+3) Lets make each row, represent 1 hr.
+4) Create a row with cells, that can take in child components.
+5) Create tasks as child compoents at Row level and pass that into cells that require it.
+6) Can we used Virtualizedlist here. Yes.. however did not use it. Read Learnings to know more.
 
-A step by step series of examples that tell you have to get a development env running
+## Tests that ran
 
-Say what the step will be
+I ran, manual test. Since thats what i know.
 
-```
-Give the example
-```
+1) By changing startDay, to see if calendar is working as expected.
+2) Adding events that over lap, to see if all events are displayed. 
+3) If an event is created, with end time before start time. It is not displayed.
+4) If an event is added to hiden date, it will be shown on rotation
 
-And repeat
+### Test that failed
 
-```
-until finished
-```
+1) If event is less than 1 hr. it does not display
+2) When startDay is set to 0, vertical view does not show sunday. 
 
-End with an example of getting some data out of the system or using it for a little demo
+## Learnings
+There were lots of learings
 
-## Running the tests
+1) Not to use multiple flatlist inside a single component.
+2) Creating muliple cells layout using virtualized list, can create similar results. However i feel that,
+    1) This leads to a more complex code. 
+    2) Can trigger more updates, while during rotation. Had issues with the same.
+3) Write lots of comments discribing each helper function.
+4) Make code readable.
 
-Explain how to run the automated tests for this system
+## What i would like improve
 
-### Break down into end to end tests
+1) Move all of the in line styles to css.
+2) Write test.
+3) My writing skills.
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
+```
+"moment": "^2.21.0",
+"react": "16.2.0",
+"react-native": "0.53.3"
+```
+Moment.js was used, this was to make handling time easier.
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Naga durga prasad E** - *Initial work* - [WeeklyCalendar](https://github.com/nagad814/weeklyCalendar)
 
 ## License
 
@@ -83,5 +71,11 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Hat tip to anyone who's code was used
+    randCol 
+    // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
+    // Adam Cole, 2011-Sept-14
+    // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+
+
 * Inspiration
-* etc
+    Apple calendar Apps week view.

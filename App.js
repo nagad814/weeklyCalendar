@@ -163,7 +163,6 @@ export default class App extends Component {
   let update = 0;
 
   this.state = { direction, width, height, finalData, arrOFTasks, headerArr, activeHeaderArr }
-    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
   
   componentDidMount(){
@@ -171,7 +170,8 @@ export default class App extends Component {
     // we can pass server side tasks here.
 
     let newArrOFTasks = [{ startTime: moment("2018-03-05T14:56:55Z"), 
-    endTime: moment("2018-03-06T14:56:55Z"), taskName:"second"}]
+    endTime: moment("2018-03-06T14:56:55Z"), taskName:"second"}, { startTime: moment("2018-03-04T00:36:55Z"), 
+    endTime: moment("2018-03-04T04:56:55Z"), taskName:"third"}]
 
     arrOFTasks = [...this.state.arrOFTasks, ...newArrOFTasks ]
 
