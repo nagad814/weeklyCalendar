@@ -56,7 +56,7 @@ const Row = (props) => {
                         <Cell key={data.dayName} onPress={onPress}>
                         <View style={{height:"100%", flexWrap:"nowrap", flexDirection: "row",}}>
                         <View style={{justifyContent:"center",flexGrow:1, flex:1, alignItems:"center",}}>
-                        <Text style={{fontSize: 20}}>
+                        <Text style={{fontSize: 18}}>
                          {monthName} {dayNum} {'\n'} {dayName}
                          </Text>
                         </View>
