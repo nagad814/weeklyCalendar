@@ -1,6 +1,8 @@
 import React from 'react';
 import {
     TouchableOpacity,
+    TouchableNativeFeedback,
+    TouchableHighlight,
     View,
   } from 'react-native'
 
@@ -13,15 +15,15 @@ const Cell = (props) => {
     } = props;
 
     return (
-        <TouchableOpacity onPress={onPress} 
-        style={{paddingTop: 10,
-            paddingRight: 10,
-            paddingBottom: 10,
-            backgroundColor: 'transparent',}}>
+        <TouchableHighlight onPress={()=>null}
+        style={{ flex: 1,  height: "100%", width:"100%",
+            borderColor:"lightgrey", borderWidth: 1,
+            backgroundColor: 'transparent', justifyContent: "space-between",
+            alignItems:"stretch",flexBasis:"auto"}}>
         <View>
             {children}
         </View>
-        </TouchableOpacity>
+        </TouchableHighlight>
     );
 };
 
