@@ -15,15 +15,13 @@ const Cell = (props) => {
     } = props;
 
     return (
-        <TouchableHighlight onPress={()=>null}
+        <View
         style={{ flex: 1,  height: "100%", width:"100%",
-            borderColor:"lightgrey", borderWidth: 1,
+            borderColor:"#4c4c4c",borderLeftWidth: 1,
             backgroundColor: 'transparent', justifyContent: "space-between",
             alignItems:"stretch",flexBasis:"auto"}}>
-        <View>
             {children}
         </View>
-        </TouchableHighlight>
     );
 };
 

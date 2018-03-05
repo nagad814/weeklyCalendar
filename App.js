@@ -19,52 +19,6 @@ import Row from "./src/grid/row";
 
 var moment = require('moment');
 
-// set starting day of the week as number
-// 0 is sunday
-const startDay = 0
-const today = new Date();
-// Get first day of the week based on startday
-var firstOfWeek = moment(today).startOf('week').weekday(startDay);
-
-
-// Create a header array
-var headerArr = new Array();
-
-for(i=0; i < 7; i++ ){
-  let d = moment.duration(i, 'd');
-  let timeObj = firstOfWeek.clone().add(d)
-  headerArr.push({timeObj, weekDay: timeObj.day(), dayNum:timeObj.date(),dayName: timeObj.format("ddd"), monthName: timeObj.format("MMM") });
-}
-
-const {width, height} = Dimensions.get("window");
-let direction = width<height;
-
-let activeHeaderArr = headerArr.slice().filter(result => result.weekDay !== 0 && result.weekDay !== 6)
-
-
-// Create weekHour array wiht 7*24 items
-
-var weekHourArr = new Array();
-
-for(i=0; i < 168; i++ ){
-  let h = moment.duration(i, 'h');
-  let timeObj = firstOfWeek.clone().add(h)
-  weekHourArr.push({timeObj, MonthDay:timeObj.date(), weekDay: timeObj.day(), hour: timeObj.hours(), task: [] });
-
-}
-
-// Create bodyArr which renders row
-
-let bodyArr = new Array();
-
-  // loop 0 to 23 to get hour rows
-for(i= 0; i < 24; i++){
- let tempArr = weekHourArr.filter(result => result.hour === i);
- let h = moment.duration(i, 'h');
- let headTitle = firstOfWeek.clone().add(h).format("hh a")
- bodyArr.push({id:''+i, headTitle,  data:tempArr});
-}
-
 // Helper funtions
 
 // 1) firstDayOfWeek get first day of week, that contains given date.
@@ -118,7 +72,6 @@ const bodyArrCreator = function(date, weekStart) {
     let timeObj = firstDay.clone().add(h)
     bodyArr.push({timeObj, MonthDay:timeObj.date(), weekDay: timeObj.day(), hour: timeObj.hours(), task:[] });
   }
-
 return bodyArr;
 }
 
@@ -168,51 +121,63 @@ return bodyArr;
 // this function is very ineffcient as it caluclates all data, which is independent of direction.
 // only needs rotation filter and body modification
 
-  const calendarArrayCreator = function (taskArr, date, weekStart, isVertical) {
+  const calendarArrayCreator = function (taskArr, date, weekStart) {
 
     let calendarArr = new Array();
     let firstOfWeek = firstDayOfWeek(date, weekStart);
     let bodyArr = bodyArrCreator(date, weekStart);
     let taskedArr = taskAdder(bodyArr, taskArr);
-    let rotationfilterArr = rotationFilter(taskedArr, weekStart, isVertical);
+    // let rotationfilterArr = rotationFilter(taskedArr, weekStart, isVertical);
 
     // loop 0 to 23 to get hour rows
     for(i= 0; i < 24; i++){
-    let tempArr = rotationfilterArr.filter(result => result.hour === i);
+    let tempArr = taskedArr.filter(result => result.hour === i);
     let h = moment.duration(i, 'h');
     let headTitle = firstOfWeek.clone().add(h).format("hh a")
     calendarArr.push({id:''+i, headTitle,  data:tempArr});
     }
     return calendarArr;
   }
-const finalData = calendarArrayCreator([{endTime: moment("2018-03-06"), 
-                  startTime: moment("2018-03-05"), taskName:"first"},
-                  { startTime: moment("2018-03-05T14:56:55Z"), 
-                  endTime: moment("2018-03-06T14:56:55Z"), taskName:"second"}], new Date(), 0);
 
-const CustomLayoutSpring = {
-  duration: 400,
-  create: {
-    type: LayoutAnimation.Types.spring,
-    property: LayoutAnimation.Properties.opacity,
-    springDamping: 0.7,
-  },
-  update: {
-    type: LayoutAnimation.Types.spring,
-    springDamping: 0.7,
-  },
-};
+const arrOFTasks = [{endTime: moment("2018-03-06"), 
+  startTime: moment("2018-03-05"), taskName:"first"}];
+
+// set starting day of the week as number
+// 0 is sunday
+const startDay = 0;
+const today = new Date();
+
+const {width, height} = Dimensions.get("window");
+let direction = width<height;
 
 export default class App extends Component {
   constructor(props){
   super(props);
-  this.state = { direction, width, height }
 
-    UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+
+  
+  let headerArr = headerArrCreator(today, startDay);
+  let activeHeaderArr = headerArr.slice().filter(result => result.weekDay !== 0 && result.weekDay !== 6)
+
+  let finalData = calendarArrayCreator(arrOFTasks, today, startDay);
+  let update = 0;
+
+  this.state = { direction, width, height, finalData, arrOFTasks, headerArr, activeHeaderArr }
+    // UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
   }
   
   componentDidMount(){
-    // moment("").isBetween(moment("2018-03-03"), )
+    // asyc adding of tasks to calendar body.
+    // we can pass server side tasks here.
+
+    let newArrOFTasks = [{ startTime: moment("2018-03-05T14:56:55Z"), 
+    endTime: moment("2018-03-06T14:56:55Z"), taskName:"second"}]
+
+    arrOFTasks = [...this.state.arrOFTasks, ...newArrOFTasks ]
+
+    let finalData = calendarArrayCreator(arrOFTasks, today, startDay);
+
+    this.setState({finalData});
     Dimensions.addEventListener('change', this._handleChange);
 
   }
@@ -222,7 +187,6 @@ export default class App extends Component {
   }
 
   _handleChange = ({window}) => {
-        LayoutAnimation.configureNext(CustomLayoutSpring);
         this.setState(prevState => ({width:window.width,height:window.height ,direction : window.width<window.height}));
   }
 
@@ -258,7 +222,7 @@ export default class App extends Component {
   }
 
   render() {
-    // console.log(this.state);
+    console.log(this.state);
    const {width, height} = this.state;
     return (
       <View style={styles.container}>
@@ -266,18 +230,18 @@ export default class App extends Component {
         {
           this.state.direction?
           (
-            <Row data={activeHeaderArr} id={"#"} direction={this.state.direction} header={true}
+            <Row data={this.state.activeHeaderArr} id={"#"} direction={this.state.direction} header={true}
             width={this.state.width} height={this.state.height} onPress={() => console.log("okay")}/>
           )
           : 
           (
-            <Row data={headerArr} id={"#"} direction={this.state.direction} header={true}
+            <Row data={this.state.headerArr} id={"#"} direction={this.state.direction} header={true}
             width={this.state.width} height={this.state.height} onPress={() => console.log("okay")}/>
           )
         }
       </View>
         <FlatList
-        data={finalData}
+        data={this.state.finalData}
         extraData={this.state}
         keyExtractor={this._keyExtractor}
         renderItem={this.renderItem}
